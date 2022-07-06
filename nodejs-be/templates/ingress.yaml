@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.ingressname }}
+  labels:
+{{ include "nodejs-be.labels" . | indent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  defaultBackend:
+  {{- range .Values.ingress.host}}
+    service:
+      name: {{ .service }}
+      port: 
+        number: {{ $.Values.service.port }}
+  {{- end }} 
+  rules:
+  {{- range .Values.ingress.host}}
+  - host: {{ .host }}
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: {{ .service }}
+            port: 
+              number: {{ $.Values.service.port }}
+  {{- end }}
+{{- end }}

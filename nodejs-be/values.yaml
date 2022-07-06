@@ -1,0 +1,44 @@
+# Default values for nodejs-be.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: us-central1-docker.pkg.dev/alert-flames-354606/dev/nodejs-be
+  pullPolicy: Always
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 3000
+
+env:
+  APP_PORT:
+    name: APP_PORT
+    value: 3000
+  
+secrets:
+  DEV_DB_URL:
+    name: DEV_DB_URL
+    value: "postgresql://postgres:postgres1234@34.122.177.223:5432/crud"
+
+
+defaultBackend:
+  enabled: true
+
+
+ingress:
+  enabled: true
+  ingressname: nodejs-be-ingress
+  host:
+    nodejs-be:
+      host: apidev.ganapathi.xyz
+      service: nodejs-be
+  annotations:
+    networking.gke.io/managed-certificates: dev-mc-be
