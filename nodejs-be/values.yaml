@@ -5,7 +5,7 @@
 replicaCount: 3
 
 image:
-  repository: us-central1-docker.pkg.dev/alert-flames-354606/dev/nodejs-be
+  repository: us-east1-docker.pkg.dev/second-project-356409/dev/nodejs-be
   pullPolicy: Always
   tag: "latest"
 
